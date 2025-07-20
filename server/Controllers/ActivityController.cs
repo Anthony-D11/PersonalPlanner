@@ -1,6 +1,9 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
+using server.Data;
 using server.Models;
 
 namespace server.Controllers
@@ -10,93 +13,80 @@ namespace server.Controllers
     [Route("api/[controller]")]
     public class ActivityController : ControllerBase
     {
-        static private List<Activity> ActivityList = new List<Activity>
+        private readonly PersonalPlannerContext _context;
+        public ActivityController(PersonalPlannerContext context)
         {
-            new Activity
-            {
-                Id = 3,
-                Content = "Go shopping",
-                Details = "",
-                Completed = false
-            },
-            new Activity
-            {
-                Id = 2,
-                Content = "Go camping",
-                Details = "Go with my family",
-                Completed = false
-            }
-        };
+            _context = context;
+        }
         [HttpGet]
-        public ActionResult<Activity> GetActivities()
+        public async Task<ActionResult<Activity>> GetActivities()
         {
+            var ActivityList = await _context.activities.ToListAsync();
             return Ok(ActivityList);
         }
         [HttpGet("{id}")]
-        public ActionResult<Activity> GetActivityById(int Id)
+        public async Task<ActionResult<Activity>> GetActivityById(int Id)
         {
-            var result = ActivityList.FirstOrDefault(x => x.Id == Id);
-            if (result == null)
+            var activity = await _context.activities.FindAsync(Id);
+            if (activity == null)
             {
                 return NotFound();
             }
-            return Ok(result);
+            return Ok(activity);
         }
         [HttpPost]
-        public ActionResult<Activity> AddActivity(Activity activity)
+        public async Task<ActionResult<Activity>> AddActivity(Activity activity)
         {
             if (activity == null)
             {
                 return BadRequest();
             }
-            var existingActivity = ActivityList.FirstOrDefault(x => x.Id == activity.Id);
+            var existingActivity = await _context.activities.FindAsync(activity.id);
             if (existingActivity != null)
             {
                 return BadRequest("Resource already existed");
             }
-            ActivityList.Add(activity);
+            await _context.activities.AddAsync(activity);
+            await _context.SaveChangesAsync();
 
             return CreatedAtAction(
                 nameof(GetActivityById),
-                new { id = activity.Id },
+                new { id = activity.id },
                 activity
             );
         }
         [HttpPut("{id}")]
-        public IActionResult UpdateActivity(int Id, Activity activity)
+        public async Task<IActionResult> UpdateActivity(int Id, Activity activity)
         {
             if (activity == null)
             {
-                return BadRequest();
+                return BadRequest("Missing payload");
             }
-            var existingActivity = ActivityList.FirstOrDefault(x => x.Id == Id);
+            var existingActivity = await _context.activities.FindAsync(Id);
             if (existingActivity == null)
             {
                 return NotFound();
             }
-            if (Id != activity.Id)
-            {
-                return BadRequest();
-            }
 
-            existingActivity.Id = activity.Id;
-            existingActivity.Content = activity.Content;
-            existingActivity.Details = activity.Details;
-            existingActivity.Completed = activity.Completed;
+            existingActivity.content = activity.content;
+            existingActivity.details = activity.details;
+            existingActivity.completed = activity.completed;
 
+            await _context.SaveChangesAsync();
             return NoContent();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteActivity(int Id)
+        public async Task<IActionResult> DeleteActivity(int Id)
         {
-            var existingActivity = ActivityList.FirstOrDefault(x => x.Id == Id);
+            var existingActivity = await _context.activities.FindAsync(Id);
             if (existingActivity == null)
             {
                 return NotFound();
             }
 
-            ActivityList.Remove(existingActivity);
+            _context.activities.Remove(existingActivity);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
