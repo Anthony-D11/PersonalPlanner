@@ -1,0 +1,32 @@
+.top_section {
+    h3 {
+        margin-block: 16px;
+    }
+    input, textarea {
+        width: calc(100% - 22px);
+        border: 1px solid black;
+        border-radius: 10px;
+        padding: 10px 10px;
+        margin-block: 7px;
+    }
+    textarea {
+        height: 200px;
+    }
+    
+}
+.attributes_selection {
+    .row {
+        max-width: 100%;
+        margin-block: 10px;
+        select, input {
+            width: fit-content;
+        }
+    }
+}
+
+.bottom_section {
+    margin-top: auto;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-around;
+}

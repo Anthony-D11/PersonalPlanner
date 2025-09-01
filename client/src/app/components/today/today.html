@@ -1,0 +1,21 @@
+<div class="main_content">
+    <h1 class="">Today </h1>
+    <div class="btn btn-outline-secondary w-100 text-start" (click)="handleNewTodoItemEvent($event)"> 
+        <i class="bi bi-plus-lg mx-1"></i>
+        Add New Task
+    </div>
+    <ul class="list-group list-group-flush">
+        @for (todo of todoList(); track todo.id) {
+            <li class="list-group-item" (click)="handleTodoItemClickEvent($event, todo)">
+                <input type="checkbox" [checked]="todo.completed"/>
+                <label for=""> {{todo.title}} </label>
+                <i class="bi bi-arrow-right"></i>
+            </li>
+        }
+    </ul>
+</div>
+@if (sideBar()) {
+    <div class="todo_item_detail">
+        <app-todo-item (closeSideBar)="handleCloseSideBar()" [currentTodoItem] = "selectedTodo()"/>
+    </div>
+}

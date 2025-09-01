@@ -1,0 +1,23 @@
+.todo_item_detail {
+    width: fit-content;
+    margin-left: auto;
+}
+.main_content {
+    width: 100%;
+    margin-right: 20px;
+    margin-left: 20px;
+    input {
+        margin-right: 15px;
+    }
+    input, label {
+        cursor: pointer;
+    }
+    li {
+        display: flex;
+        cursor: pointer;
+    }
+    i {
+        margin-left: auto;
+    }
+
+}

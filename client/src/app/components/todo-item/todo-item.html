@@ -1,0 +1,108 @@
+@if (currentTodoItem() === null) {
+    <div class="top_section">
+        <div class="d-flex align-items-center">
+            <h3>New task</h3>
+            <i class="ms-auto bi bi-x-lg" (click)="handleCloseSideBar()"></i>        
+        </div>
+        <input 
+            type="text"
+            placeholder="To-do Title"
+            [(ngModel)]="newTodoItem().title"
+        />
+        <textarea name="" id="" placeholder="To-do Description" [(ngModel)]="newTodoItem().description"></textarea>
+    </div>
+    <div class="attributes_selection">
+        <div class="row">
+            <label class="col-md-4" for="">List</label>
+            <select class="col-md-8 btn btn-outline-secondary dropdown-toggle" name="" id="">
+                <option class="dropdown-item" value="">Personal</option>
+                <option class="dropdown-item" value="">Work</option>
+                <option class="dropdown-item" value="">List 1</option>
+            </select>
+        </div>
+        <div class="row">
+            <label class="col-md-4" for="">Active Date</label>
+            <input class="col-md-8" type="date" [(ngModel)]="newTodoItem().activeDate"/>
+        </div>
+        <div class="row">
+            <label class="col-md-4" for="">Due Date</label>
+            <input class="col-md-8" type="date" [(ngModel)]="newTodoItem().dueDate"/>
+        </div>
+        <div class="row">
+            <label class="col-md-4" for="">Tags</label>
+            <select class="col-md-8  btn btn-outline-secondary dropdown-toggle" name="" id="">
+                <option class="dropdown-item" value="">Personal</option>
+                <option class="dropdown-item" value="">Work</option>
+                <option class="dropdown-item" value="">List 1</option>
+            </select>
+        </div>
+    </div>
+    <div class="tags_section">
+        <h4>Subtasks</h4>
+        <div class="btn btn-outline-secondary w-100 text-start"> <i class="bi bi-plus-lg mx-1"></i>Add New Subtask</div>
+        <ul class="">
+            <li class="my-2">
+                <input class="mx-2" type="checkbox" />
+                <label for=""> Subtask 1 </label>
+            </li>
+        </ul>
+    </div>
+    <div class="bottom_section">
+        <div class="btn btn-outline-danger" (click)="handleCloseSideBar()">Cancel</div>
+        <div class="btn btn-outline-success" (click)="handleAddTaskEvent()">Add task</div>
+    </div>
+}
+@else {
+    <div class="top_section">
+        <div class="d-flex align-items-center">
+            <h3>Task</h3>
+            <i class="ms-auto bi bi-x-lg" (click)="handleCloseSideBar()"></i>   
+        </div>
+        <input 
+            type="text"
+            placeholder="To-do Title"
+            [(ngModel)]="currentTodoItem()!.title"
+        />
+        <textarea name="" id="" placeholder="To-do Description" [(ngModel)]="currentTodoItem()!.description"></textarea>
+    </div>
+    <div class="attributes_selection">
+        <div class="row">
+            <label class="col-md-4" for="">List</label>
+            <select class="col-md-8 btn btn-outline-secondary dropdown-toggle" name="" id="">
+                <option class="dropdown-item" value="">Personal</option>
+                <option class="dropdown-item" value="">Work</option>
+                <option class="dropdown-item" value="">List 1</option>
+            </select>
+        </div>
+        <div class="row">
+            <label class="col-md-4" for="">Active Date</label>
+            <input class="col-md-8" type="date" [(ngModel)]="currentTodoItem()!.activeDate"/>
+        </div>
+        <div class="row">
+            <label class="col-md-4" for="">Due Date</label>
+            <input class="col-md-8" type="date" [(ngModel)]="currentTodoItem()!.dueDate"/>
+        </div>
+        <div class="row">
+            <label class="col-md-4" for="">Tags</label>
+            <select class="col-md-8  btn btn-outline-secondary dropdown-toggle" name="" id="">
+                <option class="dropdown-item" value="">Personal</option>
+                <option class="dropdown-item" value="">Work</option>
+                <option class="dropdown-item" value="">List 1</option>
+            </select>
+        </div>
+    </div>
+    <div class="tags_section">
+        <h4>Subtasks</h4>
+        <div class="btn btn-outline-secondary w-100 text-start"> <i class="bi bi-plus-lg mx-1"></i>Add New Subtask</div>
+        <ul class="">
+            <li class="my-2">
+                <input class="mx-2" type="checkbox" />
+                <label for=""> Subtask 1 </label>
+            </li>
+        </ul>
+    </div>
+    <div class="bottom_section">
+        <div class="btn btn-outline-danger" (click)="handleDeleteTaskEvent()">Delete task</div>
+        <div class="btn btn-outline-success" (click)="handleSaveTaskEvent()">Save changes</div>
+    </div>
+}
