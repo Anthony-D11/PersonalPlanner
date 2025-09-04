@@ -19,15 +19,15 @@ namespace server.Controllers
             _context = context;
         }
         [HttpGet]
-        public async Task<ActionResult<Activity>> GetActivities()
+        public async Task<ActionResult<List<Activity>>> GetActivities()
         {
             var ActivityList = await _context.activities.ToListAsync();
             return Ok(ActivityList);
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<Activity>> GetActivityById(int Id)
+        public async Task<ActionResult<Activity>> GetActivityById(int id)
         {
-            var activity = await _context.activities.FindAsync(Id);
+            var activity = await _context.activities.FindAsync(id);
             if (activity == null)
             {
                 return NotFound();
@@ -41,12 +41,7 @@ namespace server.Controllers
             {
                 return BadRequest();
             }
-            var existingActivity = await _context.activities.FindAsync(activity.id);
-            if (existingActivity != null)
-            {
-                return BadRequest("Resource already existed");
-            }
-            await _context.activities.AddAsync(activity);
+            _context.activities.Add(activity);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(
@@ -56,13 +51,13 @@ namespace server.Controllers
             );
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateActivity(int Id, Activity activity)
+        public async Task<IActionResult> UpdateActivity(int id, Activity activity)
         {
             if (activity == null)
             {
                 return BadRequest("Missing payload");
             }
-            var existingActivity = await _context.activities.FindAsync(Id);
+            var existingActivity = await _context.activities.FindAsync(id);
             if (existingActivity == null)
             {
                 return NotFound();
@@ -77,9 +72,9 @@ namespace server.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteActivity(int Id)
+        public async Task<IActionResult> DeleteActivity(int id)
         {
-            var existingActivity = await _context.activities.FindAsync(Id);
+            var existingActivity = await _context.activities.FindAsync(id);
             if (existingActivity == null)
             {
                 return NotFound();
