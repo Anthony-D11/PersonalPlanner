@@ -3,35 +3,16 @@ using server.Models;
 
 namespace server.Data
 {
-    public class PersonalPlannerContext : DbContext
+    public class PersonalPlannerContext(DbContextOptions dbContextOptions) : DbContext(dbContextOptions)
     {
-        public PersonalPlannerContext(DbContextOptions dbContextOptions)
-        : base(dbContextOptions)
-        {
-
-        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Activity>().HasData(
-                new Activity
-                {
-                    id = 1,
-                    content = "Go shopping",
-                    details = "",
-                    completed = false
-                },
-                new Activity
-                {
-                    id = 2,
-                    content = "Go camping",
-                    details = "Go with my family",
-                    completed = false
-                }
-            );
 
         }
 
-        public DbSet<Activity> activities { get; set; }
+        public DbSet<Todo> Todos { get; set; }
+        public DbSet<List> Lists { get; set; }
+        public DbSet<Tag> Tags { get; set; }
     }
 }
