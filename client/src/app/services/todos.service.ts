@@ -1,34 +1,43 @@
-import { Injectable, Optional } from '@angular/core';
-import { TodoType } from '../models/type';
-
+import { Injectable, Optional, inject } from '@angular/core';
+import { NewTodoType, TodoType } from '../models/type';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { Observable, throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
 export class TodosService {
-  todoList: Array<TodoType> = [
-    {
-      id: 0,
-      userId: 0,
-      title: "Research content ideas",
-      description: "Research content ideas",
-      list: null,
-      activeDate: new Date().toISOString().split('T')[0],
-      dueDate: null,
-      tag: null,
-      subTodos: [],
-      completed: false
-    },
-    {
-      id: 1,
-      userId: 0,
-      title: "Renew driver's license",
-      description: "Renew driver's license",
-      list: null,
-      activeDate: new Date().toISOString().split('T')[0],
-      dueDate: new Date().toISOString().split('T')[0],
-      tag: null,
-      subTodos: [],
-      completed: true
-    },
-  ]
+  private http = inject(HttpClient);
+  rootApiUrl = environment.apiUrl;
+
+  getTodos(): Observable<any> {
+    return this.http.get(`${this.rootApiUrl}/Todo`);
+  }
+  addTodo(todoItem: NewTodoType): Observable<any> {
+    return this.http.post(`${this.rootApiUrl}/Todo`, todoItem);
+  }
+  saveTodo(todoItem: TodoType): Observable<any> {
+    try {
+      let todoItemId = todoItem.id;
+      if(todoItemId === null) {
+        console.error("Null Todo Id is not allowed");
+      }
+      return this.http.put(`${this.rootApiUrl}/Todo/${todoItemId}`, todoItem);
+
+    } catch(error) {
+      return throwError(() => new Error('Todo Item id not found'));
+    }
+  }
+  deleteTodo(todoItem: TodoType): Observable<any> {
+    try {
+      let todoItemId = todoItem.id;
+      if(todoItemId === null) {
+        console.error("Null Todo Id is not allowed");
+      }
+      return this.http.delete(`${this.rootApiUrl}/Todo/${todoItemId}`);
+
+    } catch(error) {
+      return throwError(() => new Error('Todo Item id not found'));
+    }
+  }
 }

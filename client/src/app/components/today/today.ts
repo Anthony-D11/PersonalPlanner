@@ -15,7 +15,12 @@ export class TodayComponent implements OnInit{
   sideBar = signal<boolean>(false);
   selectedTodo = signal<TodoType | null>(null);
   ngOnInit(): void {
-    this.todoList.set(this.todoService.todoList);
+    this.refreshTodos();
+  }
+  refreshTodos() {
+    this.todoService.getTodos().subscribe( response => {
+      this.todoList.set(response);
+    });
   }
   handleTodoItemClickEvent(event: MouseEvent, todoItem: TodoType) {
     event.preventDefault();

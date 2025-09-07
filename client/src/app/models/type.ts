@@ -1,14 +1,25 @@
 export type TodoType = {
-    id: number | null;
-    userId: number | null;
-    title: string | null;
-    description: string | null;
+    id: number;
+    userId: number;
+    title: string;
+    description: string;
     list: ListType | null;
-    activeDate: string | null;
-    dueDate: string | null;
-    tag: TagType | null;
+    activeDate: string;
+    dueDate: string;
+    tag: Array<TagType>;
     subTodos: Array<TodoType>;
-    completed: boolean | null;
+    completed: boolean;
+}
+export type NewTodoType = {
+    userId: number;
+    title: string;
+    description: string;
+    list: ListType | null;
+    activeDate: string;
+    dueDate: string;
+    tag: Array<TagType>;
+    subTodos: Array<TodoType>;
+    completed: boolean;
 }
 export type ListType = {
     id: number;

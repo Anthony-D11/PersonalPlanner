@@ -16,6 +16,6 @@
 </div>
 @if (sideBar()) {
     <div class="todo_item_detail">
-        <app-todo-item (closeSideBar)="handleCloseSideBar()" [currentTodoItem] = "selectedTodo()"/>
+        <app-todo-item (closeSideBar)="handleCloseSideBar()" (databaseChanged)="refreshTodos()" [currentTodoItem] = "selectedTodo()"/>
     </div>
 }
