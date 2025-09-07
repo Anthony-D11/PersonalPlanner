@@ -1,6 +1,6 @@
 namespace server.Models
 {
-    public class List
+    public class ListItem
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;

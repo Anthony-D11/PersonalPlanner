@@ -12,7 +12,7 @@ namespace server.Data
         }
 
         public DbSet<Todo> Todos { get; set; }
-        public DbSet<List> Lists { get; set; }
+        public DbSet<ListItem> ListItems { get; set; }
         public DbSet<Tag> Tags { get; set; }
     }
 }
