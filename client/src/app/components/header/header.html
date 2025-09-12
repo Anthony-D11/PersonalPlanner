@@ -1,7 +1,7 @@
 <div class="top_section">
     <h3>Menu</h3>
     <form action="">
-        <input 
+        <input
             type="text"
             placeholder="Search"
         />
@@ -23,15 +23,57 @@
         <li>Work</li>
         <li>List 1</li>
     </ul>
-    <div> Add New List</div>
+    <div (click)="openNewListItem(true)"> Add New List</div>
+    @if (newListItem()) {
+      <div class="new-list-item-section px-2 py-2 my-3 border border-1 rounded">
+          <form action="">
+              <div class="d-flex flex-row align-items-center rounded border border-1 px-2 py-1">
+                  <div class="color rounded-1 me-2"  style="width: 20px; height: 20px;"  [ngStyle]="{'background': selectedListItemColor()}"></div>
+                  <input class="border-0 " type="text" placeholder="List Name">
+              </div>
+              <div class="list-item-color-picker my-3 d-flex flex-row justify-content-evenly" >
+                  @for (listItemColor of colors(); track $index) {
+                      <div class="px-1 py-1 rounded-1" [ngClass]="{'border': (listItemColor === selectedListItemColor())}">
+                          <div class="color rounded-1"  style="width: 20px; height: 20px;" [ngStyle]="{'background': listItemColor}" (click)="handleSelectListItemColor($event, listItemColor)"></div>
+                      </div>
+                  }
+              </div>
+          </form>
+          <div class="btn-group btn-group-sm d-flex flex-row">
+            <button class="btn btn-outline-primary" (click)="saveNewListItem()">Save</button>
+            <button class="btn btn-outline-secondary" (click)="openNewListItem(false)">Cancel</button>
+          </div>
+      </div>
+    }
 </div>
 <div class="tags_section">
     <h4>TAGS</h4>
     <ul>
         <li>Tag 1</li>
         <li>Tag 2</li>
-        <li>Add Tag</li>
     </ul>
+    <div (click)="openNewTagItem(true)"> Add New Tag</div>
+    @if (newTagItem()) {
+      <div class="new-Tag-item-section px-2 py-2 my-3 border border-1 rounded">
+          <form action="">
+              <div class="d-flex flex-row align-items-center rounded border border-1 px-2 py-1">
+                  <div class="color rounded-1 me-2"  style="width: 20px; height: 20px;"  [ngStyle]="{'background': selectedTagItemColor()}"></div>
+                  <input class="border-0 " type="text" placeholder="Tag Name">
+              </div>
+              <div class="list-item-color-picker my-3 d-flex flex-row justify-content-evenly" >
+                  @for (tagItemColor of colors(); track $index) {
+                      <div class="px-1 py-1 rounded-1" [ngClass]="{'border': (tagItemColor === selectedTagItemColor())}">
+                          <div class="color rounded-1"  style="width: 20px; height: 20px;" [ngStyle]="{'background': tagItemColor}" (click)="handleSelectTagItemColor($event, tagItemColor)"></div>
+                      </div>
+                  }
+              </div>
+          </form>
+          <div class="btn-group btn-group-sm d-flex flex-row">
+            <button class="btn btn-outline-primary" (click)="saveNewTagItem()">Save</button>
+            <button class="btn btn-outline-secondary" (click)="openNewTagItem(false)">Cancel</button>
+          </div>
+      </div>
+    }
 </div>
 <div class="bottom_section">
     <div>Settings</div>
