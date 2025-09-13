@@ -11,57 +11,57 @@ namespace server.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class TagController(PersonalPlannerContext context) : ControllerBase
+    public class TodoTagController(PersonalPlannerContext context) : ControllerBase
     {
         private readonly PersonalPlannerContext _context = context;
 
         [HttpGet]
-        public async Task<ActionResult<List<Tag>>> GetTodos()
+        public async Task<ActionResult<List<TodoTag>>> GetTodoTags()
         {
-            var Tags = await _context.Tags.ToListAsync();
-            return Ok(Tags);
+            var TodoTags = await _context.TodoTags.ToListAsync();
+            return Ok(TodoTags);
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<Tag>> GetTagById(int id)
+        public async Task<ActionResult<TodoTag>> GetTodoTagById(int id)
         {
-            var Tag = await _context.Tags.FindAsync(id);
-            if (Tag == null)
+            var TodoTag = await _context.TodoTags.FindAsync(id);
+            if (TodoTag == null)
             {
                 return NotFound();
             }
-            return Ok(Tag);
+            return Ok(TodoTag);
         }
         [HttpPost]
-        public async Task<ActionResult<Tag>> AddTag(Tag tag)
+        public async Task<ActionResult<TodoTag>> AddTodoTag(TodoTag todoTag)
         {
-            if (tag == null)
+            if (todoTag == null)
             {
                 return BadRequest();
             }
-            _context.Tags.Add(tag);
+            _context.TodoTags.Add(todoTag);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(
-                nameof(GetTagById),
-                new { id = tag.Id },
-                tag
+                nameof(GetTodoTagById),
+                new { id = todoTag.Id },
+                todoTag
             );
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTodo(int id, Tag tag)
+        public async Task<IActionResult> UpdateTodo(int id, TodoTag todoTag)
         {
-            if (tag == null)
+            if (todoTag == null)
             {
                 return BadRequest("Missing payload");
             }
-            var existingTag = await _context.Tags.FindAsync(id);
-            if (existingTag == null)
+            var existingTodoTag = await _context.TodoTags.FindAsync(id);
+            if (existingTodoTag == null)
             {
                 return NotFound();
             }
 
-            existingTag.Name = tag.Name;
-            existingTag.Color = tag.Color;
+            existingTodoTag.Name = todoTag.Name;
+            existingTodoTag.Color = todoTag.Color;
 
             await _context.SaveChangesAsync();
             return NoContent();
@@ -70,13 +70,13 @@ namespace server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTodo(int id)
         {
-            var existingTag = await _context.Tags.FindAsync(id);
-            if (existingTag == null)
+            var existingTodoTag = await _context.TodoTags.FindAsync(id);
+            if (existingTodoTag == null)
             {
                 return NotFound();
             }
 
-            _context.Tags.Remove(existingTag);
+            _context.TodoTags.Remove(existingTodoTag);
             await _context.SaveChangesAsync();
 
             return NoContent();

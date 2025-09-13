@@ -8,7 +8,6 @@ using server.Models;
 
 namespace server.Controllers
 {
-
     [ApiController]
     [Route("api/v1/[controller]")]
     public class TodoController(PersonalPlannerContext context) : ControllerBase
