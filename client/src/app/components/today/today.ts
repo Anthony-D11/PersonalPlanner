@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { TodoItemComponent } from '../todo-item/todo-item';
 import { TodosService } from '../../services/todos.service';
-import { TodoType } from '../../models/type';
+import { Todo } from '../../models/interfaces';
 
 @Component({
   selector: 'app-today',
@@ -11,9 +11,9 @@ import { TodoType } from '../../models/type';
 })
 export class TodayComponent implements OnInit{
   todoService = inject(TodosService);
-  todoList = signal<Array<TodoType>>([]);
+  todoList = signal<Array<Todo>>([]);
   sideBar = signal<boolean>(false);
-  selectedTodo = signal<TodoType | null>(null);
+  selectedTodo = signal<Todo | null>(null);
   ngOnInit(): void {
     this.refreshTodos();
   }
@@ -22,7 +22,7 @@ export class TodayComponent implements OnInit{
       this.todoList.set(response);
     });
   }
-  handleTodoItemClickEvent(event: MouseEvent, todoItem: TodoType) {
+  handleTodoItemClickEvent(event: MouseEvent, todoItem: Todo) {
     event.preventDefault();
     this.selectedTodo.set(todoItem);
     this.sideBar.set(true);

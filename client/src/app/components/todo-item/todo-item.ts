@@ -1,5 +1,5 @@
 import { Component, EventEmitter, input, Output, signal, inject } from '@angular/core';
-import { NewTodoType, TodoType } from '../../models/type';
+import { NewTodo, Todo } from '../../models/interfaces';
 import { TodosService } from '../../services/todos.service';
 import { FormsModule } from '@angular/forms';
 
@@ -11,8 +11,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class TodoItemComponent {
   todoService = inject(TodosService);
-  currentTodoItem = input.required<TodoType | null>();
-  newTodoItem = signal<NewTodoType>({
+  currentTodoItem = input.required<Todo | null>();
+  newTodoItem = signal<NewTodo>({
     userId: 1,
     title: "",
     description: "",

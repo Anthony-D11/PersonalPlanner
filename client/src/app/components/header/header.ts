@@ -1,43 +1,86 @@
-import { Component, signal, NgModule } from '@angular/core';
+import { NewTodoList, NewTodoTag, TodoList, TodoTag } from '../../models/interfaces';
+import { TodoListsService } from './../../services/todo-list.service';
+import { Component, signal, NgModule, inject, model, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { TodoTagsService } from '../../services/todo-tag.service';
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './header.html',
   styleUrl: './header.scss'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit{
+  todoListsService = inject(TodoListsService);
+  todoTagsService = inject(TodoTagsService);
+  ngOnInit(): void {
+    this.refreshTodoLists();
+    this.refreshTodoTags();
+  }
+
   colors = signal<Array<string>>(["#ff6b6b", "#da77f2", "#9775fa", "#5c7cfa", "#66d9e8", "#8ce99a", "#ffd43b", "#ff922b"])
 
   // List item variables & functions
-  selectedListItemColor = signal<string>("#ff6b6b");
-  handleSelectListItemColor(event: Event, color: string) {
+  newTodoListName = model<string>("");
+  existingTodoLists = signal<Array<TodoList>>([]);
+  selectedTodoListColor = signal<string>("#ff6b6b");
+  handleSelectTodoListColor(event: Event, color: string) {
     event.preventDefault();
-    this.selectedListItemColor.set(color);
+    this.selectedTodoListColor.set(color);
   }
-  newListItem = signal<boolean>(false);
-  openNewListItem(value: boolean) {
-    this.newListItem.set(value);
+  newTodoListPanel = signal<boolean>(false);
+  openNewTodoList(value: boolean) {
+    this.newTodoListPanel.set(value);
   }
-  saveNewListItem() {
-
+  saveNewTodoList() {
+    let newTodoList: NewTodoList = {
+      userId: 1,
+      name: this.newTodoListName(),
+      color: this.selectedTodoListColor(),
+      todos: []
+    }
+    this.todoListsService.addTodoList(newTodoList).subscribe((response) => {
+      this.refreshTodoLists();
+      this.openNewTodoList(false);
+    })
+  }
+  refreshTodoLists() {
+    this.todoListsService.getTodoLists().subscribe((response) => {
+      this.existingTodoLists.set(response);
+    });
   }
 
   // Tag item variables & functions
-  selectedTagItemColor = signal<string>("#ff6b6b");
-  handleSelectTagItemColor(event: Event, color: string) {
+  newTodoTagName = model<string>("");
+  existingTodoTags = signal<Array<TodoTag>>([]);
+  selectedTodoTagColor = signal<string>("#ff6b6b");
+  handleSelectTodoTagColor(event: Event, color: string) {
     event.preventDefault();
-    this.selectedTagItemColor.set(color);
+    this.selectedTodoTagColor.set(color);
   }
-  newTagItem = signal<boolean>(false);
-  openNewTagItem(value: boolean) {
-    this.newTagItem.set(value);
+  newTodoTagPanel = signal<boolean>(false);
+  openNewTodoTag(value: boolean) {
+    this.newTodoTagPanel.set(value);
   }
 
 
-  saveNewTagItem() {
-
+  saveNewTodoTag() {
+    let newTodoTag: NewTodoTag = {
+      userId: 1,
+      name: this.newTodoTagName(),
+      color: this.selectedTodoTagColor(),
+      todos: []
+    }
+    this.todoTagsService.addTodoTag(newTodoTag).subscribe((response) => {
+      this.refreshTodoTags();
+      this.openNewTodoTag(false);
+    })
+  }
+  refreshTodoTags() {
+    this.todoTagsService.getTodoTags().subscribe((response) => {
+      this.existingTodoTags.set(response);
+    });
   }
 
 

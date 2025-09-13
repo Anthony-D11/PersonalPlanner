@@ -1,5 +1,5 @@
 import { Injectable, Optional, inject } from '@angular/core';
-import { NewTodoType, TodoType } from '../models/type';
+import { NewTodo, Todo } from '../models/interfaces';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable, throwError } from 'rxjs';
@@ -13,10 +13,10 @@ export class TodosService {
   getTodos(): Observable<any> {
     return this.http.get(`${this.rootApiUrl}/Todo`);
   }
-  addTodo(todoItem: NewTodoType): Observable<any> {
+  addTodo(todoItem: NewTodo): Observable<any> {
     return this.http.post(`${this.rootApiUrl}/Todo`, todoItem);
   }
-  saveTodo(todoItem: TodoType): Observable<any> {
+  saveTodo(todoItem: Todo): Observable<any> {
     try {
       let todoItemId = todoItem.id;
       if(todoItemId === null) {
@@ -28,7 +28,7 @@ export class TodosService {
       return throwError(() => new Error('Todo Item id not found'));
     }
   }
-  deleteTodo(todoItem: TodoType): Observable<any> {
+  deleteTodo(todoItem: Todo): Observable<any> {
     try {
       let todoItemId = todoItem.id;
       if(todoItemId === null) {
