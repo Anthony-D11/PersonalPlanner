@@ -1,7 +1,9 @@
-import { Component, EventEmitter, input, Output, signal, inject } from '@angular/core';
-import { NewTodo, Todo } from '../../models/interfaces';
+import { Component, EventEmitter, input, Output, signal, inject, OnInit } from '@angular/core';
+import { NewTodo, Todo, TodoList, TodoTag } from '../../models/interfaces';
 import { TodosService } from '../../services/todos.service';
 import { FormsModule } from '@angular/forms';
+import { TodoListsService } from '../../services/todo-list.service';
+import { TodoTagsService } from '../../services/todo-tag.service';
 
 @Component({
   selector: 'app-todo-item',
@@ -9,14 +11,19 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './todo-item.html',
   styleUrl: './todo-item.scss'
 })
-export class TodoItemComponent {
+export class TodoItemComponent implements OnInit{
   todoService = inject(TodosService);
+  todoListsService = inject(TodoListsService);
+  todoTagsService = inject(TodoTagsService);
   currentTodoItem = input.required<Todo | null>();
+  existingTodoLists = signal<Array<TodoList>>([]);
+  existingTodoTags = signal<Array<TodoTag>>([]);
+
   newTodoItem = signal<NewTodo>({
     userId: 1,
     title: "",
     description: "",
-    list: null,
+    listId: null,
     activeDate: "",
     dueDate: "",
     tag: [],
@@ -25,6 +32,11 @@ export class TodoItemComponent {
   });
   @Output() closeSideBar = new EventEmitter<boolean>();
   @Output() databaseChanged = new EventEmitter<boolean>();
+
+  ngOnInit(): void {
+    this.refreshTodoLists();
+    this.refreshTodoTags();
+  }
 
   handleCloseSideBar() {
     this.closeSideBar.emit(true);
@@ -43,9 +55,21 @@ export class TodoItemComponent {
     })
   }
   handleAddTaskEvent() {
+    console.log(this.newTodoItem())
     this.todoService.addTodo(this.newTodoItem()).subscribe(response => {
       this.closeSideBar.emit(true);
       this.databaseChanged.emit(true);
+    });
+  }
+
+  refreshTodoLists() {
+    this.todoListsService.getTodoLists().subscribe((response) => {
+      this.existingTodoLists.set(response);
+    });
+  }
+  refreshTodoTags() {
+    this.todoTagsService.getTodoTags().subscribe((response) => {
+      this.existingTodoTags.set(response);
     });
   }
 

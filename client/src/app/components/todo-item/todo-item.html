@@ -1,93 +1,82 @@
-@if (currentTodoItem() === null) {
     <div class="top_section">
         <div class="d-flex align-items-center">
-            <h3>New task</h3>
-            <i class="ms-auto bi bi-x-lg" (click)="handleCloseSideBar()"></i>        
+          @if (currentTodoItem() === null) {
+            <h3>New task:</h3>
+          }
+          @else {
+            <h3>Task:</h3>
+          }
+            <i class="ms-auto bi bi-x-lg btn" (click)="handleCloseSideBar()"></i>
         </div>
-        <input 
-            type="text"
-            placeholder="To-do Title"
-            [(ngModel)]="newTodoItem().title"
-        />
-        <textarea name="" id="" placeholder="To-do Description" [(ngModel)]="newTodoItem().description"></textarea>
-    </div>
-    <div class="attributes_selection">
-        <div class="row">
-            <label class="col-md-4" for="">List</label>
-            <select class="col-md-8 btn btn-outline-secondary dropdown-toggle" name="" id="">
-                <option class="dropdown-item" value="">Personal</option>
-                <option class="dropdown-item" value="">Work</option>
-                <option class="dropdown-item" value="">List 1</option>
-            </select>
-        </div>
-        <div class="row">
-            <label class="col-md-4" for="">Active Date</label>
-            <input class="col-md-8" type="date" [(ngModel)]="newTodoItem().activeDate"/>
-        </div>
-        <div class="row">
-            <label class="col-md-4" for="">Due Date</label>
-            <input class="col-md-8" type="date" [(ngModel)]="newTodoItem().dueDate"/>
-        </div>
-        <div class="row">
-            <label class="col-md-4" for="">Tags</label>
-            <select class="col-md-8  btn btn-outline-secondary dropdown-toggle" name="" id="">
-                <option class="dropdown-item" value="">Personal</option>
-                <option class="dropdown-item" value="">Work</option>
-                <option class="dropdown-item" value="">List 1</option>
-            </select>
-        </div>
-    </div>
-    <div class="tags_section">
-        <h4>Subtasks</h4>
-        <div class="btn btn-outline-secondary w-100 text-start"> <i class="bi bi-plus-lg mx-1"></i>Add New Subtask</div>
-        <ul class="">
-            <li class="my-2">
-                <input class="mx-2" type="checkbox" />
-                <label for=""> Subtask 1 </label>
-            </li>
-        </ul>
-    </div>
-    <div class="bottom_section">
-        <div class="btn btn-outline-danger" (click)="handleCloseSideBar()">Cancel</div>
-        <div class="btn btn-outline-success" (click)="handleAddTaskEvent()">Add task</div>
-    </div>
-}
-@else {
-    <div class="top_section">
-        <div class="d-flex align-items-center">
-            <h3>Task</h3>
-            <i class="ms-auto bi bi-x-lg" (click)="handleCloseSideBar()"></i>   
-        </div>
-        <input 
+        @if (currentTodoItem() === null) {
+          <input
+              class="border border-1 rounded"
+              type="text"
+              placeholder="To-do Title"
+              [(ngModel)]="newTodoItem().title"
+          />
+          <textarea class="border border-1 rounded" placeholder="To-do Description" [(ngModel)]="newTodoItem().description"></textarea>
+        }
+        @else {
+          <input
+            class="border border-1 rounded"
             type="text"
             placeholder="To-do Title"
             [(ngModel)]="currentTodoItem()!.title"
-        />
-        <textarea name="" id="" placeholder="To-do Description" [(ngModel)]="currentTodoItem()!.description"></textarea>
-    </div>
+          />
+          <textarea class="border border-1 rounded" placeholder="To-do Description" [(ngModel)]="currentTodoItem()!.description"></textarea>
+        }
+      </div>
     <div class="attributes_selection">
         <div class="row">
             <label class="col-md-4" for="">List</label>
-            <select class="col-md-8 btn btn-outline-secondary dropdown-toggle" name="" id="">
-                <option class="dropdown-item" value="">Personal</option>
-                <option class="dropdown-item" value="">Work</option>
-                <option class="dropdown-item" value="">List 1</option>
-            </select>
+            @if (currentTodoItem() === null) {
+              <select class="col-md-8 btn btn-outline-secondary form-select form-select-sm pe-5 border border-1 rounded" [(ngModel)]="newTodoItem().listId">
+                <option [ngValue]="null" selected>Select List</option>
+                @for (todoList of existingTodoLists(); track $index) {
+                  <option [ngValue]="todoList.id" >{{todoList.name}}</option>
+                }
+              </select>
+            }
+            @else {
+              <select class="col-md-8 btn btn-outline-secondary form-select form-select-sm pe-5 border border-1 rounded" [(ngModel)]="currentTodoItem()!.listId">
+                <option>Select List</option>
+                @for (todoList of existingTodoLists(); track $index) {
+                  <option [ngValue]="todoList.id" [selected]="currentTodoItem()!.listId === todoList.id">{{todoList.name}}</option>
+                }
+              </select>
+            }
+
         </div>
         <div class="row">
             <label class="col-md-4" for="">Active Date</label>
-            <input class="col-md-8" type="date" [(ngModel)]="currentTodoItem()!.activeDate"/>
+            @if (currentTodoItem() === null) {
+              <input class="col-md-8 border border-1 rounded" type="date" [(ngModel)]="newTodoItem().activeDate"/>
+            }
+            @else {
+              <input class="col-md-8 border border-1 rounded" type="date" [(ngModel)]="currentTodoItem()!.activeDate"/>
+            }
         </div>
         <div class="row">
             <label class="col-md-4" for="">Due Date</label>
-            <input class="col-md-8" type="date" [(ngModel)]="currentTodoItem()!.dueDate"/>
+            @if (currentTodoItem() === null) {
+              <input class="col-md-8 border border-1 rounded" type="date" [(ngModel)]="newTodoItem().dueDate"/>
+            }
+            @else {
+              <input class="col-md-8 border border-1 rounded" type="date" [(ngModel)]="currentTodoItem()!.dueDate"/>
+            }
         </div>
         <div class="row">
             <label class="col-md-4" for="">Tags</label>
-            <select class="col-md-8  btn btn-outline-secondary dropdown-toggle" name="" id="">
-                <option class="dropdown-item" value="">Personal</option>
-                <option class="dropdown-item" value="">Work</option>
-                <option class="dropdown-item" value="">List 1</option>
+            <select class="col-md-8  btn btn-outline-secondary dropdown-toggle form-select form-select-sm pe-5 border border-1 rounded" name="" id="">
+              @for (todoTag of existingTodoTags(); track $index) {
+                @if (currentTodoItem() === null) {
+                  <option class="dropdown-item" value="">{{todoTag.name}}</option>
+                }
+                @else {
+                  <option class="dropdown-item" value="">{{todoTag.name}}</option>
+                }
+              }
             </select>
         </div>
     </div>
@@ -102,7 +91,13 @@
         </ul>
     </div>
     <div class="bottom_section">
-        <div class="btn btn-outline-danger" (click)="handleDeleteTaskEvent()">Delete task</div>
-        <div class="btn btn-outline-success" (click)="handleSaveTaskEvent()">Save changes</div>
+        @if (currentTodoItem() === null) {
+          <div class="btn btn-outline-danger" (click)="handleCloseSideBar()">Cancel</div>
+          <div class="btn btn-success" (click)="handleAddTaskEvent()">Add task</div>
+
+        }
+        @else {
+          <div class="btn btn-outline-danger" (click)="handleDeleteTaskEvent()">Delete task</div>
+          <div class="btn btn-success" (click)="handleSaveTaskEvent()">Save task</div>
+        }
     </div>
-}

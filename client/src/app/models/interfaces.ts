@@ -3,7 +3,7 @@ export interface Todo {
     userId: number;
     title: string;
     description: string;
-    list: TodoList | null;
+    listId: number | null;
     activeDate: string;
     dueDate: string;
     tag: Array<TodoTag>;
@@ -14,7 +14,7 @@ export interface NewTodo {
     userId: number;
     title: string;
     description: string;
-    list: TodoList | null;
+    listId: number | null;
     activeDate: string;
     dueDate: string;
     tag: Array<TodoTag>;
@@ -26,26 +26,26 @@ export interface TodoList{
     userId: number;
     name: string;
     color: string;
-    todos: Array<Todo>;
+    numTodos: number;
 }
 export interface NewTodoList {
     userId: number;
     name: string;
     color: string;
-    todos: Array<Todo>;
+    numTodos: number;
 }
 export interface TodoTag {
     id: number;
     userId: number;
     name: string;
     color: string;
-    todos: Array<Todo>;
+    numTodos: number;
 }
 export interface NewTodoTag {
     userId: number;
     name: string;
     color: string;
-    todos: Array<Todo>;
+    numTodos: number;
 }
 export interface User {
     id: number;
