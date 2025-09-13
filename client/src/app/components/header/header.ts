@@ -19,7 +19,7 @@ export class HeaderComponent implements OnInit{
     this.refreshTodoTags();
   }
 
-  colors = signal<Array<string>>(["#ff6b6b", "#da77f2", "#9775fa", "#5c7cfa", "#66d9e8", "#8ce99a", "#ffd43b", "#ff922b"])
+  colors = signal<Array<string>>(["#ff6b6b", "#d977f2", "#9775fa", "#5c7cfa", "#66d9e8", "#8ce99a", "#ffd43b", "#ff922b"])
 
   // List item variables & functions
   newTodoListName = model<string>("");
@@ -38,7 +38,7 @@ export class HeaderComponent implements OnInit{
       userId: 1,
       name: this.newTodoListName(),
       color: this.selectedTodoListColor(),
-      todos: []
+      numTodos: 0
     }
     this.todoListsService.addTodoList(newTodoList).subscribe((response) => {
       this.refreshTodoLists();
@@ -70,7 +70,7 @@ export class HeaderComponent implements OnInit{
       userId: 1,
       name: this.newTodoTagName(),
       color: this.selectedTodoTagColor(),
-      todos: []
+      numTodos: 0
     }
     this.todoTagsService.addTodoTag(newTodoTag).subscribe((response) => {
       this.refreshTodoTags();

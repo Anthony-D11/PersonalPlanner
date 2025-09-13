@@ -1,31 +1,43 @@
 <div class="top_section">
-    <h3>Menu</h3>
-    <form action="">
-        <input
-            type="text"
-            placeholder="Search"
-        />
-    </form>
+    <h3 class="fw-bold">Menu</h3>
+    <input class="border border-1 rounded form-control" type="text" placeholder="Search"/>
 </div>
-<div class="tasks_section">
-    <h4>TASKS</h4>
-    <ul>
-        <li>Upcoming</li>
-        <li>Today</li>
-        <li>Calendar</li>
-        <li>Sticky Wall</li>
-    </ul>
+<div class="tasks_section border-bottom pb-3">
+    <h4 class="fs-6 fw-bold">TASKS</h4>
+    <div class="d-flex flex-column">
+      <div class="d-flex flex-row align-items-center px-2 py-2 btn">
+        <i class="bi bi-arrow-90deg-up me-2"></i>
+        <div>Upcoming</div>
+        <div class="ms-auto rounded-1 px-2" style="background: #ebebeb;">1</div>
+      </div>
+      <div class="d-flex flex-row align-items-center px-2 py-2 btn">
+        <i class="bi bi-list-check me-2"></i>
+        <div>Today</div>
+        <div class="ms-auto rounded-1 px-2" style="background: #ebebeb;">1</div>
+      </div>
+      <div class="d-flex flex-row align-items-center px-2 py-2 btn">
+        <i class="bi bi-calendar3 me-2"></i>
+        <div>Calendar</div>
+        <div class="ms-auto rounded-1 px-2" style="background: #ebebeb;">1</div>
+      </div>
+      <div class="d-flex flex-row align-items-center px-2 py-2 btn">
+        <i class="bi bi-sticky me-2"></i>
+        <div>Sticky Wall</div>
+        <div class="ms-auto rounded-1 px-2" style="background: #ebebeb;">1</div>
+      </div>
+    </div>
 </div>
-<div class="lists_section">
-    <h4>LISTS</h4>
+<div class="lists_section border-bottom pb-3">
+    <h4 class="fs-6 fw-bold">LISTS</h4>
     <div class="d-flex flex-column">
         @for (todoList of existingTodoLists(); track $index) {
-          <div class="d-flex flex-row align-items-center px-2 py-2">
-            <div class="color rounded-1 me-3"  style="width: 20px; height: 20px;"  [ngStyle]="{'background': todoList.color}"></div>
-            <div class="">{{todoList.name}}</div>
+          <div class="d-flex flex-row align-items-center px-2 py-2 btn">
+            <div class="rounded-1 me-3"  style="width: 20px; height: 20px;"  [ngStyle]="{'background': todoList.color}"></div>
+            <div>{{todoList.name}}</div>
+            <div class="ms-auto rounded-1 px-2" style="background: #ebebeb;">{{todoList.numTodos}}</div>
           </div>
         }
-      <div class="d-flex flex-row align-items-center px-2 py-2" (click)="openNewTodoList(true)">
+      <div class="d-flex flex-row align-items-center px-2 py-2 btn" (click)="openNewTodoList(true)">
         <i class="bi bi-plus-lg me-3"></i>
         <div>Add New List</div>
       </div>
@@ -34,13 +46,13 @@
       <div class="new-list-item-section px-2 py-2 my-3 border border-1 rounded">
           <div>
               <div class="d-flex flex-row align-items-center rounded border border-1 px-2 py-1">
-                  <div class="color rounded-1 me-2"  style="width: 20px; height: 20px;"  [ngStyle]="{'background': selectedTodoListColor()}"></div>
+                  <div class="rounded-1 me-2"  style="width: 20px; height: 20px;"  [ngStyle]="{'background': selectedTodoListColor()}"></div>
                   <input class="border-0 " type="text" placeholder="List Name" [(ngModel)]="newTodoListName">
               </div>
               <div class="list-item-color-picker my-3 d-flex flex-row justify-content-evenly" >
                   @for (todoListColor of colors(); track $index) {
                       <div class="px-1 py-1 rounded-1" [ngClass]="{'border': (todoListColor === selectedTodoListColor())}">
-                          <div class="color rounded-1"  style="width: 20px; height: 20px;" [ngStyle]="{'background': todoListColor}" (click)="handleSelectTodoListColor($event, todoListColor)"></div>
+                          <div class="rounded-1"  style="width: 20px; height: 20px;" [ngStyle]="{'background': todoListColor}" (click)="handleSelectTodoListColor($event, todoListColor)"></div>
                       </div>
                   }
               </div>
@@ -52,31 +64,30 @@
       </div>
     }
 </div>
-<div class="tags_section">
-    <h4>TAGS</h4>
-    <div class="d-flex flex-column">
+<div class="tags_section pb-3">
+    <h4 class="fs-6 fw-bold">TAGS</h4>
+    <div class="d-flex flex-row flex-wrap">
         @for (tag of existingTodoTags(); track $index) {
-          <div class="d-flex flex-row align-items-center px-2 py-2">
-            <div class="color rounded-1 me-3"  style="width: 20px; height: 20px;"  [ngStyle]="{'background': tag.color}"></div>
-            <div class="">{{tag.name}}</div>
+          <div class="rounded-1 px-3 py-1 lh-sm me-1 mt-1 btn"  [ngStyle]="{'background': tag.color + '80'}">
+            {{tag.name}}
           </div>
         }
-      <div class="d-flex flex-row align-items-center px-2 py-2" (click)="openNewTodoTag(true)">
-        <i class="bi bi-plus-lg me-3"></i>
-        <div>Add New Tag</div>
+      <div class="d-flex flex-row align-items-center rounded-1 px-3 py-1 lh-sm me-1 mt-1 btn" (click)="openNewTodoTag(true)" style="background: #ebebeb;">
+        <i class="bi bi-plus me-1"></i>
+        <div>Add Tag</div>
       </div>
     </div>
     @if (newTodoTagPanel()) {
       <div class="new-Tag-item-section px-2 py-2 my-3 border border-1 rounded">
           <div>
               <div class="d-flex flex-row align-items-center rounded border border-1 px-2 py-1">
-                  <div class="color rounded-1 me-2"  style="width: 20px; height: 20px;"  [ngStyle]="{'background': selectedTodoTagColor()}"></div>
+                  <div class="rounded-1 me-2"  style="width: 20px; height: 20px;"  [ngStyle]="{'background': selectedTodoTagColor()}"></div>
                   <input class="border-0 " type="text" placeholder="Tag Name" [(ngModel)]="newTodoTagName">
               </div>
               <div class="list-item-color-picker my-3 d-flex flex-row justify-content-evenly" >
                   @for (todoTagColor of colors(); track $index) {
                       <div class="px-1 py-1 rounded-1" [ngClass]="{'border': (todoTagColor === selectedTodoTagColor())}">
-                          <div class="color rounded-1"  style="width: 20px; height: 20px;" [ngStyle]="{'background': todoTagColor}" (click)="handleSelectTodoTagColor($event, todoTagColor)"></div>
+                          <div class="rounded-1"  style="width: 20px; height: 20px;" [ngStyle]="{'background': todoTagColor}" (click)="handleSelectTodoTagColor($event, todoTagColor)"></div>
                       </div>
                   }
               </div>
@@ -88,7 +99,13 @@
       </div>
     }
 </div>
-<div class="bottom_section">
-    <div>Settings</div>
-    <div>Sign out</div>
+<div class="bottom_section mt-auto mb-3">
+    <div class="my-1 d-flex btn">
+      <i class="bi bi-sliders me-3"></i>
+      <div>Settings</div>
+    </div>
+    <div class="my-1 d-flex btn">
+      <i class="bi bi-box-arrow-right me-3"></i>
+      <div>Sign out</div>
+    </div>
 </div>
