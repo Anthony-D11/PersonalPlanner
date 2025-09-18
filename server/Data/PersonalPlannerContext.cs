@@ -9,10 +9,26 @@ namespace server.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<TodoTag>()
+            .HasKey(k => new { k.TodoId, k.TagId });
+
+            modelBuilder.Entity<TodoTag>()
+            .HasOne(k => k.Todo)
+            .WithMany(k => k.TodosTags)
+            .HasForeignKey(k => k.TodoId);
+
+            modelBuilder.Entity<TodoTag>()
+            .HasOne(k => k.Tag)
+            .WithMany(k => k.TodosTags)
+            .HasForeignKey(k => k.TagId);
+
+
+
         }
 
         public DbSet<Todo> Todos { get; set; }
-        public DbSet<TodoList> TodoLists { get; set; }
-        public DbSet<TodoTag> TodoTags { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<TodoTag> TodosTags { get; set; }
+        public DbSet<Category> Categories { get; set; }
     }
 }

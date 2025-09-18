@@ -2,8 +2,9 @@ namespace server.Models
 {
     public class TodoTag
     {
-        public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public string Color { get; set; } = string.Empty;
+        public int TodoId { get; set; }
+        public Todo Todo { get; set; } = null!;
+        public int TagId { get; set; }
+        public Tag Tag { get; set; } = null!;
     }
 }
