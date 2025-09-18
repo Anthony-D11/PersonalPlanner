@@ -1,9 +1,9 @@
-import { NewTodoList, NewTodoTag, TodoList, TodoTag } from '../../models/interfaces';
-import { TodoListsService } from './../../services/todo-list.service';
+import { NewCategory, NewTag, Category, Tag } from '../../models/interfaces';
+import { CategoryService } from '../../services/category.service';
 import { Component, signal, NgModule, inject, model, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TodoTagsService } from '../../services/todo-tag.service';
+import { TagService } from '../../services/tag.service';
 
 @Component({
   selector: 'app-header',
@@ -12,74 +12,70 @@ import { TodoTagsService } from '../../services/todo-tag.service';
   styleUrl: './header.scss'
 })
 export class HeaderComponent implements OnInit{
-  todoListsService = inject(TodoListsService);
-  todoTagsService = inject(TodoTagsService);
+  todoListsService = inject(CategoryService);
+  todoTagService = inject(TagService);
   ngOnInit(): void {
-    this.refreshTodoLists();
-    this.refreshTodoTags();
+    this.refreshCategorys();
+    this.refreshTags();
   }
 
   colors = signal<Array<string>>(["#ff6b6b", "#d977f2", "#9775fa", "#5c7cfa", "#66d9e8", "#8ce99a", "#ffd43b", "#ff922b"])
 
   // List item variables & functions
-  newTodoListName = model<string>("");
-  existingTodoLists = signal<Array<TodoList>>([]);
-  selectedTodoListColor = signal<string>("#ff6b6b");
-  handleSelectTodoListColor(event: Event, color: string) {
+  newCategoryName = model<string>("");
+  existingCategories = signal<Array<Category>>([]);
+  selectedCategoryColor = signal<string>("#ff6b6b");
+  handleSelectCategoryColor(event: Event, color: string) {
     event.preventDefault();
-    this.selectedTodoListColor.set(color);
+    this.selectedCategoryColor.set(color);
   }
-  newTodoListPanel = signal<boolean>(false);
-  openNewTodoList(value: boolean) {
-    this.newTodoListPanel.set(value);
+  newCategoryPanel = signal<boolean>(false);
+  openNewCategory(value: boolean) {
+    this.newCategoryPanel.set(value);
   }
-  saveNewTodoList() {
-    let newTodoList: NewTodoList = {
-      userId: 1,
-      name: this.newTodoListName(),
-      color: this.selectedTodoListColor(),
-      numTodos: 0
+  saveNewCategory() {
+    let newCategory: NewCategory = {
+      name: this.newCategoryName(),
+      color: this.selectedCategoryColor()
     }
-    this.todoListsService.addTodoList(newTodoList).subscribe((response) => {
-      this.refreshTodoLists();
-      this.openNewTodoList(false);
+    this.todoListsService.addCategory(newCategory).subscribe((response) => {
+      this.refreshCategorys();
+      this.openNewCategory(false);
     })
   }
-  refreshTodoLists() {
-    this.todoListsService.getTodoLists().subscribe((response) => {
-      this.existingTodoLists.set(response);
+  refreshCategorys() {
+    this.todoListsService.getCategories().subscribe((response) => {
+      this.existingCategories.set(response);
     });
   }
 
   // Tag item variables & functions
-  newTodoTagName = model<string>("");
-  existingTodoTags = signal<Array<TodoTag>>([]);
-  selectedTodoTagColor = signal<string>("#ff6b6b");
-  handleSelectTodoTagColor(event: Event, color: string) {
+  newTagName = model<string>("");
+  existingTags = signal<Array<Tag>>([]);
+  selectedTagColor = signal<string>("#ff6b6b");
+  handleSelectTagColor(event: Event, color: string) {
     event.preventDefault();
-    this.selectedTodoTagColor.set(color);
+    this.selectedTagColor.set(color);
   }
-  newTodoTagPanel = signal<boolean>(false);
-  openNewTodoTag(value: boolean) {
-    this.newTodoTagPanel.set(value);
+  newTagPanel = signal<boolean>(false);
+  openNewTag(value: boolean) {
+    this.newTagPanel.set(value);
   }
 
 
-  saveNewTodoTag() {
-    let newTodoTag: NewTodoTag = {
-      userId: 1,
-      name: this.newTodoTagName(),
-      color: this.selectedTodoTagColor(),
-      numTodos: 0
+  saveNewTag() {
+    let newTag: NewTag = {
+      name: this.newTagName(),
+      color: this.selectedTagColor()
     }
-    this.todoTagsService.addTodoTag(newTodoTag).subscribe((response) => {
-      this.refreshTodoTags();
-      this.openNewTodoTag(false);
+    this.todoTagService.addTag(newTag).subscribe((response) => {
+      this.refreshTags();
+      this.openNewTag(false);
     })
   }
-  refreshTodoTags() {
-    this.todoTagsService.getTodoTags().subscribe((response) => {
-      this.existingTodoTags.set(response);
+  refreshTags() {
+    this.todoTagService.getTags().subscribe((response) => {
+      this.existingTags.set(response);
     });
   }
 

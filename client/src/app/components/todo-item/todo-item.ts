@@ -1,32 +1,45 @@
-import { Component, EventEmitter, input, Output, signal, inject, OnInit } from '@angular/core';
-import { NewTodo, Todo, TodoList, TodoTag } from '../../models/interfaces';
-import { TodosService } from '../../services/todos.service';
+import { Component, EventEmitter, input, Output, signal, inject, OnInit, model, computed, InputSignal, Signal, WritableSignal } from '@angular/core';
+import { NewTodo, Todo, Category, Tag } from '../../models/interfaces';
+import { TodoService } from '../../services/todo.service';
 import { FormsModule } from '@angular/forms';
-import { TodoListsService } from '../../services/todo-list.service';
-import { TodoTagsService } from '../../services/todo-tag.service';
+import { CategoryService } from '../../services/category.service';
+import { TagService } from '../../services/tag.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-todo-item',
-  imports: [FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './todo-item.html',
   styleUrl: './todo-item.scss'
 })
 export class TodoItemComponent implements OnInit{
-  todoService = inject(TodosService);
-  todoListsService = inject(TodoListsService);
-  todoTagsService = inject(TodoTagsService);
-  currentTodoItem = input.required<Todo | null>();
-  existingTodoLists = signal<Array<TodoList>>([]);
-  existingTodoTags = signal<Array<TodoTag>>([]);
+  todoService = inject(TodoService);
+  categoryService = inject(CategoryService);
+  tagService = inject(TagService);
+  inputTodo = input.required<Todo | null>();
+  currentTodoItem = signal<Todo | null>(null);
+  existingCategories = signal<Array<Category>>([]);
+  existingTags = signal<Array<Tag>>([]);
+  selectedTagId = signal<number | null>(null);
+
+  selectedTags = computed(() => {
+    if (this.currentTodoItem() === null) {
+      let tagIds = this.newTodoItem().tagIds;
+      return this.existingTags().filter(tag => tagIds.some(tagId => tag.id === tagId));
+    }
+    else {
+      let tagIds = this.currentTodoItem()!.tagIds;
+      return this.existingTags().filter(tag => tagIds.some(tagId => tag.id === tagId));
+    }
+  });
 
   newTodoItem = signal<NewTodo>({
-    userId: 1,
     title: "",
     description: "",
-    listId: null,
     activeDate: "",
     dueDate: "",
-    tag: [],
+    tagIds: [],
+    categoryId: null,
     subTodos: [],
     completed: false
   });
@@ -34,8 +47,9 @@ export class TodoItemComponent implements OnInit{
   @Output() databaseChanged = new EventEmitter<boolean>();
 
   ngOnInit(): void {
-    this.refreshTodoLists();
-    this.refreshTodoTags();
+    this.refreshCategories();
+    this.refreshTags();
+    this.currentTodoItem.set(this.inputTodo());
   }
 
   handleCloseSideBar() {
@@ -62,15 +76,26 @@ export class TodoItemComponent implements OnInit{
     });
   }
 
-  refreshTodoLists() {
-    this.todoListsService.getTodoLists().subscribe((response) => {
-      this.existingTodoLists.set(response);
+  refreshCategories() {
+    this.categoryService.getCategories().subscribe((response) => {
+      this.existingCategories.set(response);
     });
   }
-  refreshTodoTags() {
-    this.todoTagsService.getTodoTags().subscribe((response) => {
-      this.existingTodoTags.set(response);
+  refreshTags() {
+    this.tagService.getTags().subscribe((response) => {
+      this.existingTags.set(response);
     });
   }
 
+  updateSelectedTagId(value: number | number) {
+    this.selectedTagId.set(value);
+  }
+  addSelectedTag(object: any) {
+    if (this.selectedTagId() !== null && object() !== null && !object().tagIds.some((tagId: number) => tagId === this.selectedTagId())) {
+      object.update((currentObject: any) => ({
+        ...currentObject,
+        tagIds: [...currentObject!.tagIds!, this.selectedTagId()!]
+      }));
+    }
+  }
 }

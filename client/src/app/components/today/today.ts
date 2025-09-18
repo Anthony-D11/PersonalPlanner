@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { TodoItemComponent } from '../todo-item/todo-item';
-import { TodosService } from '../../services/todos.service';
+import { TodoService } from '../../services/todo.service';
 import { Todo } from '../../models/interfaces';
 
 @Component({
@@ -10,7 +10,7 @@ import { Todo } from '../../models/interfaces';
   styleUrl: './today.scss'
 })
 export class TodayComponent implements OnInit{
-  todoService = inject(TodosService);
+  todoService = inject(TodoService);
   todoList = signal<Array<Todo>>([]);
   sideBar = signal<boolean>(false);
   selectedTodo = signal<Todo | null>(null);

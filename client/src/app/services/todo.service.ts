@@ -6,7 +6,7 @@ import { Observable, throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class TodosService {
+export class TodoService {
   private http = inject(HttpClient);
   rootApiUrl = environment.apiUrl;
 

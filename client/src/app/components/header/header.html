@@ -28,38 +28,38 @@
     </div>
 </div>
 <div class="lists_section border-bottom pb-3">
-    <h4 class="fs-6 fw-bold">LISTS</h4>
+    <h4 class="fs-6 fw-bold">CATEGORIES</h4>
     <div class="d-flex flex-column">
-        @for (todoList of existingTodoLists(); track $index) {
+        @for (category of existingCategories(); track $index) {
           <div class="d-flex flex-row align-items-center px-2 py-2 btn">
-            <div class="rounded-1 me-3"  style="width: 20px; height: 20px;"  [ngStyle]="{'background': todoList.color}"></div>
-            <div>{{todoList.name}}</div>
-            <div class="ms-auto rounded-1 px-2" style="background: #ebebeb;">{{todoList.numTodos}}</div>
+            <div class="rounded-1 me-3"  style="width: 20px; height: 20px;"  [ngStyle]="{'background': category.color}"></div>
+            <div>{{category.name}}</div>
+            <div class="ms-auto rounded-1 px-2" style="background: #ebebeb;">{{category.todoIds.length}}</div>
           </div>
         }
-      <div class="d-flex flex-row align-items-center px-2 py-2 btn" (click)="openNewTodoList(true)">
+      <div class="d-flex flex-row align-items-center px-2 py-2 btn" (click)="openNewCategory(true)">
         <i class="bi bi-plus-lg me-3"></i>
-        <div>Add New List</div>
+        <div>Add New Category</div>
       </div>
     </div>
-    @if (newTodoListPanel()) {
+    @if (newCategoryPanel()) {
       <div class="new-list-item-section px-2 py-2 my-3 border border-1 rounded">
           <div>
               <div class="d-flex flex-row align-items-center rounded border border-1 px-2 py-1">
-                  <div class="rounded-1 me-2"  style="width: 20px; height: 20px;"  [ngStyle]="{'background': selectedTodoListColor()}"></div>
-                  <input class="border-0 " type="text" placeholder="List Name" [(ngModel)]="newTodoListName">
+                  <div class="rounded-1 me-2"  style="width: 20px; height: 20px;"  [ngStyle]="{'background': selectedCategoryColor()}"></div>
+                  <input class="border-0 " type="text" placeholder="List Name" [(ngModel)]="newCategoryName" style="background: unset;">
               </div>
               <div class="list-item-color-picker my-3 d-flex flex-row justify-content-evenly" >
-                  @for (todoListColor of colors(); track $index) {
-                      <div class="px-1 py-1 rounded-1" [ngClass]="{'border': (todoListColor === selectedTodoListColor())}">
-                          <div class="rounded-1"  style="width: 20px; height: 20px;" [ngStyle]="{'background': todoListColor}" (click)="handleSelectTodoListColor($event, todoListColor)"></div>
+                  @for (categoryColor of colors(); track $index) {
+                      <div class="px-1 py-1 rounded-1" [ngClass]="{'border': (categoryColor === selectedCategoryColor())}">
+                          <div class="rounded-1"  style="width: 20px; height: 20px;" [ngStyle]="{'background': categoryColor}" (click)="handleSelectCategoryColor($event, categoryColor)"></div>
                       </div>
                   }
               </div>
           </div>
           <div class="btn-group btn-group-sm d-flex flex-row">
-            <button class="btn btn-outline-primary" (click)="saveNewTodoList()">Save</button>
-            <button class="btn btn-outline-secondary" (click)="openNewTodoList(false)">Cancel</button>
+            <button class="btn btn-outline-primary" (click)="saveNewCategory()">Save</button>
+            <button class="btn btn-outline-secondary" (click)="openNewCategory(false)">Cancel</button>
           </div>
       </div>
     }
@@ -67,34 +67,34 @@
 <div class="tags_section pb-3">
     <h4 class="fs-6 fw-bold">TAGS</h4>
     <div class="d-flex flex-row flex-wrap">
-        @for (tag of existingTodoTags(); track $index) {
+        @for (tag of existingTags(); track $index) {
           <div class="rounded-1 px-3 py-1 lh-sm me-1 mt-1 btn"  [ngStyle]="{'background': tag.color + '80'}">
             {{tag.name}}
           </div>
         }
-      <div class="d-flex flex-row align-items-center rounded-1 px-3 py-1 lh-sm me-1 mt-1 btn" (click)="openNewTodoTag(true)" style="background: #ebebeb;">
+      <div class="d-flex flex-row align-items-center rounded-1 px-3 py-1 lh-sm me-1 mt-1 btn" (click)="openNewTag(true)" style="background: #ebebeb;">
         <i class="bi bi-plus me-1"></i>
         <div>Add Tag</div>
       </div>
     </div>
-    @if (newTodoTagPanel()) {
+    @if (newTagPanel()) {
       <div class="new-Tag-item-section px-2 py-2 my-3 border border-1 rounded">
           <div>
               <div class="d-flex flex-row align-items-center rounded border border-1 px-2 py-1">
-                  <div class="rounded-1 me-2"  style="width: 20px; height: 20px;"  [ngStyle]="{'background': selectedTodoTagColor()}"></div>
-                  <input class="border-0 " type="text" placeholder="Tag Name" [(ngModel)]="newTodoTagName">
+                  <div class="rounded-1 me-2"  style="width: 20px; height: 20px;"  [ngStyle]="{'background': selectedTagColor()}"></div>
+                  <input class="border-0 " type="text" placeholder="Tag Name" [(ngModel)]="newTagName" style="background: unset;">
               </div>
               <div class="list-item-color-picker my-3 d-flex flex-row justify-content-evenly" >
-                  @for (todoTagColor of colors(); track $index) {
-                      <div class="px-1 py-1 rounded-1" [ngClass]="{'border': (todoTagColor === selectedTodoTagColor())}">
-                          <div class="rounded-1"  style="width: 20px; height: 20px;" [ngStyle]="{'background': todoTagColor}" (click)="handleSelectTodoTagColor($event, todoTagColor)"></div>
+                  @for (tagColor of colors(); track $index) {
+                      <div class="px-1 py-1 rounded-1" [ngClass]="{'border': (tagColor === selectedTagColor())}">
+                          <div class="rounded-1"  style="width: 20px; height: 20px;" [ngStyle]="{'background': tagColor}" (click)="handleSelectTagColor($event, tagColor)"></div>
                       </div>
                   }
               </div>
           </div>
           <div class="btn-group btn-group-sm d-flex flex-row">
-            <button class="btn btn-outline-primary" (click)="saveNewTodoTag()">Save</button>
-            <button class="btn btn-outline-secondary" (click)="openNewTodoTag(false)">Cancel</button>
+            <button class="btn btn-outline-primary" (click)="saveNewTag()">Save</button>
+            <button class="btn btn-outline-secondary" (click)="openNewTag(false)">Cancel</button>
           </div>
       </div>
     }

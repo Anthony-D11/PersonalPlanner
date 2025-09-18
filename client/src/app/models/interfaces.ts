@@ -1,51 +1,43 @@
 export interface Todo {
     id: number;
-    userId: number;
     title: string;
     description: string;
-    listId: number | null;
     activeDate: string;
     dueDate: string;
-    tag: Array<TodoTag>;
+    tagIds: Array<number>;
+    categoryId: number | null;
     subTodos: Array<Todo>;
     completed: boolean;
 }
 export interface NewTodo {
-    userId: number;
     title: string;
     description: string;
-    listId: number | null;
     activeDate: string;
     dueDate: string;
-    tag: Array<TodoTag>;
+    tagIds: Array<number>;
+    categoryId: number | null;
     subTodos: Array<Todo>;
     completed: boolean;
 }
-export interface TodoList{
+export interface Category{
     id: number;
-    userId: number;
     name: string;
     color: string;
-    numTodos: number;
+    todoIds: Array<number>;
 }
-export interface NewTodoList {
-    userId: number;
+export interface NewCategory {
     name: string;
     color: string;
-    numTodos: number;
 }
-export interface TodoTag {
+export interface Tag {
     id: number;
-    userId: number;
     name: string;
     color: string;
-    numTodos: number;
+    todoIds: Array<number>;
 }
-export interface NewTodoTag {
-    userId: number;
+export interface NewTag {
     name: string;
     color: string;
-    numTodos: number;
 }
 export interface User {
     id: number;
