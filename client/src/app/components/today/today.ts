@@ -2,10 +2,12 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { TodoItemComponent } from '../todo-item/todo-item';
 import { TodoService } from '../../services/todo.service';
 import { Todo } from '../../models/interfaces';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-today',
-  imports: [TodoItemComponent],
+  imports: [TodoItemComponent, CommonModule, FormsModule],
   templateUrl: './today.html',
   styleUrl: './today.scss'
 })
@@ -34,5 +36,12 @@ export class TodayComponent implements OnInit{
     event.preventDefault();
     this.selectedTodo.set(null);
     this.sideBar.set(true);
+  }
+
+  flipTodoCompletedValue(todo: Todo) {
+    todo.completed = !todo.completed
+    this.todoService.saveTodo(todo).subscribe(() => {
+      this.refreshTodos()
+    })
   }
 }

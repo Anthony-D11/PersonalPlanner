@@ -1,7 +1,7 @@
 <div class="main_content">
     <div class="d-flex flex-row align-items-center px-2 py-2">
       <h1 class="fw-bold me-4 fs-1">Today </h1>
-      <div class="border rounded-1 px-2 py-1 fs-2 lh-1">1</div>
+      <div class="border rounded-1 px-2 py-1 fs-2 lh-1">{{todoList().length}}</div>
     </div>
     <div class="btn btn-outline-secondary w-100 text-start border border-1" (click)="handleNewTodoItemEvent($event)">
         <i class="bi bi-plus-lg mx-1"></i>
@@ -9,10 +9,12 @@
     </div>
     <ul class="list-group list-group-flush">
         @for (todo of todoList(); track todo.id) {
-            <li class="list-group-item" (click)="handleTodoItemClickEvent($event, todo)">
-                <input type="checkbox" [checked]="todo.completed"/>
-                <label for=""> {{todo.title}} </label>
-                <i class="bi bi-arrow-right"></i>
+            <li class="list-group-item">
+                <input class="me-3" type="checkbox" [checked]="todo.completed" (change)="flipTodoCompletedValue(todo)"/>
+                <div class="d-flex flex-row flex-fill" (click)="handleTodoItemClickEvent($event, todo)">
+                  <label> {{todo.title}} </label>
+                  <i class="bi bi-arrow-right ms-auto"></i>
+                </div>
             </li>
         }
     </ul>
