@@ -5,22 +5,22 @@
 <div class="tasks_section border-bottom pb-3">
     <h4 class="fs-6 fw-bold">TASKS</h4>
     <div class="d-flex flex-column">
-      <div class="d-flex flex-row align-items-center px-2 py-2 btn">
+      <div class="d-flex flex-row align-items-center px-2 py-2 rounded-1 header-item cursor-pointer">
         <i class="bi bi-arrow-90deg-up me-2"></i>
         <div>Upcoming</div>
         <div class="ms-auto rounded-1 px-2" style="background: #ebebeb;">1</div>
       </div>
-      <div class="d-flex flex-row align-items-center px-2 py-2 btn">
+      <div class="d-flex flex-row align-items-center px-2 py-2 rounded-1 header-item cursor-pointer">
         <i class="bi bi-list-check me-2"></i>
         <div>Today</div>
         <div class="ms-auto rounded-1 px-2" style="background: #ebebeb;">1</div>
       </div>
-      <div class="d-flex flex-row align-items-center px-2 py-2 btn">
+      <div class="d-flex flex-row align-items-center px-2 py-2 rounded-1 header-item cursor-pointer">
         <i class="bi bi-calendar3 me-2"></i>
         <div>Calendar</div>
         <div class="ms-auto rounded-1 px-2" style="background: #ebebeb;">1</div>
       </div>
-      <div class="d-flex flex-row align-items-center px-2 py-2 btn">
+      <div class="d-flex flex-row align-items-center px-2 py-2 rounded-1 header-item cursor-pointer">
         <i class="bi bi-sticky me-2"></i>
         <div>Sticky Wall</div>
         <div class="ms-auto rounded-1 px-2" style="background: #ebebeb;">1</div>
@@ -31,13 +31,13 @@
     <h4 class="fs-6 fw-bold">CATEGORIES</h4>
     <div class="d-flex flex-column">
         @for (category of existingCategories(); track $index) {
-          <div class="d-flex flex-row align-items-center px-2 py-2 btn">
+          <div class="d-flex flex-row align-items-center px-2 py-2 rounded-1 header-item cursor-pointer">
             <div class="rounded-1 me-3"  style="width: 20px; height: 20px;"  [ngStyle]="{'background': category.color}"></div>
             <div>{{category.name}}</div>
             <div class="ms-auto rounded-1 px-2" style="background: #ebebeb;">{{category.todoIds.length}}</div>
           </div>
         }
-      <div class="d-flex flex-row align-items-center px-2 py-2 btn" (click)="openNewCategory(true)">
+      <div class="d-flex flex-row align-items-center px-2 py-2 rounded-1 header-item cursor-pointer" (click)="openNewCategory(true)">
         <i class="bi bi-plus-lg me-3"></i>
         <div>Add New Category</div>
       </div>
@@ -51,7 +51,7 @@
               </div>
               <div class="list-item-color-picker my-3 d-flex flex-row justify-content-evenly" >
                   @for (categoryColor of colors(); track $index) {
-                      <div class="px-1 py-1 rounded-1" [ngClass]="{'border': (categoryColor === selectedCategoryColor())}">
+                      <div class="px-1 py-1 rounded-1 cursor-pointer" [ngClass]="{'border': (categoryColor === selectedCategoryColor())}">
                           <div class="rounded-1"  style="width: 20px; height: 20px;" [ngStyle]="{'background': categoryColor}" (click)="handleSelectCategoryColor($event, categoryColor)"></div>
                       </div>
                   }
@@ -86,7 +86,7 @@
               </div>
               <div class="list-item-color-picker my-3 d-flex flex-row justify-content-evenly" >
                   @for (tagColor of colors(); track $index) {
-                      <div class="px-1 py-1 rounded-1" [ngClass]="{'border': (tagColor === selectedTagColor())}">
+                      <div class="px-1 py-1 rounded-1 cursor-pointer" [ngClass]="{'border': (tagColor === selectedTagColor())}">
                           <div class="rounded-1"  style="width: 20px; height: 20px;" [ngStyle]="{'background': tagColor}" (click)="handleSelectTagColor($event, tagColor)"></div>
                       </div>
                   }
@@ -100,11 +100,11 @@
     }
 </div>
 <div class="bottom_section mt-auto mb-3">
-    <div class="my-1 d-flex btn">
+    <div class="my-1 d-flex px-2 py-2 rounded-1 header-item cursor-pointer">
       <i class="bi bi-sliders me-3"></i>
       <div>Settings</div>
     </div>
-    <div class="my-1 d-flex btn">
+    <div class="my-1 d-flex px-2 py-2 rounded-1 header-item cursor-pointer">
       <i class="bi bi-box-arrow-right me-3"></i>
       <div>Sign out</div>
     </div>
