@@ -4,7 +4,7 @@ using server.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
+var FRONTEND_URL = Environment.GetEnvironmentVariable("FRONTEND_URL");
 // Add services to the container.
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -18,9 +18,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://localhost:4200")
-                                                    .AllowAnyHeader()
-                                                    .AllowAnyMethod();
+                          policy.WithOrigins(FRONTEND_URL).AllowAnyHeader().AllowAnyMethod();
                       });
 });
 
