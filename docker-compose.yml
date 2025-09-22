@@ -25,24 +25,11 @@ services:
     depends_on:
       - sqlserver
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - FRONTEND_URL=http://localhost:4200
+      - FRONTEND_URL=https://personal-planner-client.onrender.com
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PersonalPlanner;User Id=sa;Password=TestPassword123;TrustServerCertificate=True;
     networks:
       - app-network
     restart: on-failure
-
-  client:
-    build:
-      context: ./client
-      dockerfile: Dockerfile
-    container_name: client
-    ports:
-      - "4200:4200"
-    depends_on:
-      - apiserver
-    networks:
-      - app-network
 
 networks:
   app-network:

@@ -4,7 +4,7 @@ using server.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-var FRONTEND_URL = Environment.GetEnvironmentVariable("FRONTEND_URL");
+var FRONTEND_URL = builder.Configuration["FRONTEND_URL"] ?? "http://localhost:4200";
 // Add services to the container.
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
