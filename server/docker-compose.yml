@@ -17,7 +17,7 @@ services:
 
   apiserver:
     build:
-      context: ./server
+      context: .
       dockerfile: Dockerfile
     container_name: apiserver
     ports:
