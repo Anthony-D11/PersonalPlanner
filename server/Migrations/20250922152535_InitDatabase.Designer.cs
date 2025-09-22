@@ -11,7 +11,7 @@ using server.Data;
 namespace server.Migrations
 {
     [DbContext(typeof(PersonalPlannerContext))]
-    [Migration("20250918010012_InitDatabase")]
+    [Migration("20250922152535_InitDatabase")]
     partial class InitDatabase
     {
         /// <inheritdoc />

@@ -42,6 +42,7 @@ testem.log
 .DS_Store
 Thumbs.db
 
-
+# Temporary project files
 server/bin
 server/obj
+sqlserver-data

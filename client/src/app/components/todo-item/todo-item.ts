@@ -69,7 +69,6 @@ export class TodoItemComponent implements OnInit{
     })
   }
   handleAddTaskEvent() {
-    console.log(this.newTodoItem())
     this.todoService.addTodo(this.newTodoItem()).subscribe(response => {
       this.closeSideBar.emit(true);
       this.databaseChanged.emit(true);

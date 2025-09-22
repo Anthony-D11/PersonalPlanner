@@ -21,7 +21,6 @@ builder.Services.AddCors(options =>
                           policy.WithOrigins(FRONTEND_URL).AllowAnyHeader().AllowAnyMethod();
                       });
 });
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -35,6 +34,12 @@ app.UseHttpsRedirection();
 app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthorization();
+
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<PersonalPlannerContext>();
+    db.Database.Migrate(); // applies migrations, creates DB if not exists
+}
 
 app.MapControllers();
 

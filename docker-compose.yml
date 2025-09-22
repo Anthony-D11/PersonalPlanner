@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+  sqlserver:
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+    container_name: sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=TestPassword123
+    # restart: always
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    networks:
+      - app-network
+
+  apiserver:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: apiserver
+    ports:
+      - "8080:8080"
+    depends_on:
+      - sqlserver
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - FRONTEND_URL=http://localhost:4200
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PersonalPlanner;User Id=sa;Password=TestPassword123;TrustServerCertificate=True;
+    networks:
+      - app-network
+    restart: on-failure
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: client
+    ports:
+      - "4200:4200"
+    depends_on:
+      - apiserver
+    networks:
+      - app-network
+
+networks:
+  app-network:
+volumes:
+  sqlserver-data:

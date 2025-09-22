@@ -47,7 +47,7 @@
           <div>
               <div class="d-flex flex-row align-items-center rounded border border-1 px-2 py-1">
                   <div class="rounded-1 me-2"  style="width: 20px; height: 20px;"  [ngStyle]="{'background': selectedCategoryColor()}"></div>
-                  <input class="border-0 " type="text" placeholder="List Name" [(ngModel)]="newCategoryName" style="background: unset;">
+                  <input class="border-0 " type="text" placeholder="Category Name" [(ngModel)]="newCategoryName" style="background: unset;">
               </div>
               <div class="list-item-color-picker my-3 d-flex flex-row justify-content-evenly" >
                   @for (categoryColor of colors(); track $index) {
