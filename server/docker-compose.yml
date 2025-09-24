@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  sqlserver:
+  database:
     image: "mcr.microsoft.com/mssql/server:2019-latest"
     container_name: sqlserver
     environment:
@@ -11,7 +11,7 @@ services:
     ports:
       - "1433:1433"
     volumes:
-      - sqlserver-data:/var/opt/mssql
+      - database-data:/var/opt/mssql
     networks:
       - app-network
 
@@ -23,10 +23,11 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - sqlserver
+      - database
     environment:
+      - ASPNETCORE_ENVIRONMENT=Production
       - FRONTEND_URL=https://personal-planner-client.onrender.com
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=PersonalPlanner;User Id=sa;Password=TestPassword123;TrustServerCertificate=True;
+      - ConnectionStrings__DefaultConnection=Server=database;Database=PersonalPlanner;User Id=sa;Password=TestPassword123;TrustServerCertificate=True;
     networks:
       - app-network
     restart: on-failure
@@ -34,4 +35,4 @@ services:
 networks:
   app-network:
 volumes:
-  sqlserver-data:
+  database-data:
