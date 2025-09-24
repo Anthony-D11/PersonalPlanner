@@ -25,7 +25,7 @@ services:
     depends_on:
       - database
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - FRONTEND_URL=https://personal-planner-client.onrender.com
       - ConnectionStrings__DefaultConnection=Server=database;Database=PersonalPlanner;User Id=sa;Password=TestPassword123;TrustServerCertificate=True;
     networks:
