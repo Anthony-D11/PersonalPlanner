@@ -5,13 +5,14 @@ using server.Data;
 var builder = WebApplication.CreateBuilder(args);
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
-var FRONTEND_URL = builder.Configuration["ASPNETCORE_ENVIRONMENT"] == "Production" ? builder.Configuration["FRONTEND_URL"] : "http://localhost:4200";
+var FRONTEND_URL = builder.Configuration["FRONTEND_URL"];
 // Add services to the container.
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddDbContext<PersonalPlannerContext>(
-    options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+    options => options.UseSqlite(builder.Configuration.GetConnectionString("SQLiteConnection"))
+    //options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
     );
 
 builder.Services.AddCors(options =>
