@@ -3,26 +3,38 @@ using Scalar.AspNetCore;
 using server.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+var allowSpecificOrigins = "AllowSpecificOrigins";
 
-var FRONTEND_URL = builder.Configuration["FRONTEND_URL"];
 // Add services to the container.
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddDbContext<PersonalPlannerContext>(
     options => options.UseSqlite(builder.Configuration.GetConnectionString("SQLiteConnection"))
-    //options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-    );
-
-builder.Services.AddCors(options =>
+    //options.UseSqlServer(builder.Configuration.GetConnectionString("SQLServerConnection"))
+);
+if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
 {
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-                      policy =>
-                      {
-                          policy.WithOrigins(FRONTEND_URL).AllowAnyHeader().AllowAnyMethod();
-                      });
-});
+    var FRONTEND_URL = builder.Configuration["FRONTEND_URL"];
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy(name: allowSpecificOrigins, policy =>
+        {
+            policy.WithOrigins(FRONTEND_URL).AllowAnyHeader().AllowAnyMethod();
+        });
+    });
+}
+else
+{
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy(name: "AllowAll", policy =>
+        {
+            policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+        });
+    });
+}
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -33,7 +45,14 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors(MyAllowSpecificOrigins);
+if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
+{
+    app.UseCors(allowSpecificOrigins);
+}
+else
+{
+    app.UseCors("AllowAll");
+}
 
 app.UseAuthorization();
 
